@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Profile = require('../models/Profile');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
@@ -38,6 +39,9 @@ const registerUser = async (req, res) => {
     });
 
     if (user) {
+      // Automatically create an empty profile for the new user
+      await Profile.create({ user: user._id });
+
       res.status(201).json({
         _id: user.id,
         email: user.email,

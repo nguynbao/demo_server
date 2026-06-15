@@ -9,8 +9,8 @@ const profileSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    required: [true, 'Please add a name'],
-    trim: true
+    trim: true,
+    default: ''
   },
   age: {
     type: Number,
