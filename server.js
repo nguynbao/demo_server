@@ -29,4 +29,17 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  
+  // Auto-ping to keep Render server awake (every 5 minutes)
+  setInterval(() => {
+    // RENDER_EXTERNAL_URL là biến môi trường tự động có trên Render, hoặc bạn có thể tự cấu hình biến SERVER_URL trong .env
+    const url = process.env.RENDER_EXTERNAL_URL || process.env.SERVER_URL || `http://localhost:${PORT}`;
+    const httpModule = url.startsWith('https') ? require('https') : require('http');
+    
+    httpModule.get(url, (res) => {
+      console.log(`[Auto-Ping] Trạng thái: ${res.statusCode} - Chống ngủ đông thành công!`);
+    }).on('error', (err) => {
+      console.error(`[Auto-Ping] Lỗi: ${err.message}`);
+    });
+  }, 5 * 60 * 1000); // 300,000 ms = 5 phút
 });
