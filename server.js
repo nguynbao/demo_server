@@ -18,6 +18,7 @@ app.use(cors());
 
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/profile', require('./routes/profileRoutes'));
 
 // Basic route for testing
 app.get('/', (req, res) => {
